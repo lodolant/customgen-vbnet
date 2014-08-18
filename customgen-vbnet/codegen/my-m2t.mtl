@@ -48,9 +48,9 @@
 
 [template public genAttribute(p : Property)]
 [if (p.visibility = VisibilityKind::private)]
-	Private _[p.name/] As [p.type.toString().trim()];['\n\t'/]
-[Else]
-	Public [p.name/] As [p.type.toString().trim()];['\n\t'/]
+	Private _[p.name/] As [p.type.toString().trim()/];['\n\t'/]
+[else]
+	Public [p.name/] As [p.type.toString().trim()/];['\n\t'/]
 [/if]
 [/template]
 
