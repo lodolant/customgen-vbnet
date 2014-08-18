@@ -35,49 +35,58 @@
 [template public gen(c : Class)]
 	[file ('src/'.concat(c.qualifiedName.path()).concat('.vb'), false, 'UTF-8')]
 		/* Generated from GenMyModel */
-		[c.visibility/] Class [c.name/]
-
+		[if (c.visibility = VisibilityKind::public)]
+		Public Class [c.name/]
+		[else]
+		Private Class [c.name/]
+		[/if]
 		[for (p : Property | c.ownedAttribute)]
 			[p.genAttribute()/]
 		[/for]
 
 		Sub New()
-		
 		End Sub
 
 		[for (o : Operation | c.ownedOperation)]
-			[o.genOperation()/]
+		[o.genOperation()/]
 		[/for]
 	[/file]
 [/template]
 
 
 [template public genAttribute(p : Property)]
-[if (p.visibility = VisibilityKind::private)]
-	Private _[p.name/] As [p.type.name/];
-[else]
-	Public [p.name/] As [p.type.name/];
+[if (p.visibility = VisibilityKind::private)]Private _[p.name/] As [p.type.name/];
+[else]Public [p.name/] As [p.type.name/];
 [/if]
 [/template]
 
 
 
 [template public genOperation(o : Operation)]
-[if (o.visibility = VisibilityKind::private)]
-	Private [genMethod(o)/] _[o.name/]()
-[else]
-	Public  [genMethod(o)/] [o.name/]()
+[if (o.visibility = VisibilityKind::private)]Private [genMethod(o)/] _[o.name/]()
+[else]Public  [genMethod(o)/] [o.name/]()
 [/if]
-
 [/template]
 
 
 [template public genMethod(o : Operation)]
 	[if (o.returnResult() <> null)]
+		[if (o.returnResult().type.name.toString() = 'Property')]
+			[genProperty(o)/]
+		[else]
 		Function 
+		[/if]
 	[else]
-		Sub 
+	Sub 
 	[/if]
+[/template]
+
+[template public genProperty(o : Operation)]
+        Get
+        End Get
+
+        Set(ByVal value)
+        End Set
 [/template]
 
 [query public path(n : String) : String =
