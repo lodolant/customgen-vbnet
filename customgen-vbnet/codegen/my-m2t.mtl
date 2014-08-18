@@ -38,14 +38,14 @@
 [if (c.visibility = VisibilityKind::public)]Public Class [c.name/][else]Private Class [c.name/][/if]
 
 [for (p : Property | c.ownedAttribute)]
-	[p.genAttribute()/]
+[p.genAttribute()/]
 [/for]
 
-Sub New()
-End Sub
+	Sub New()
+	End Sub
 
 [for (o : Operation | c.ownedOperation)]
-	[o.genOperation()/]
+[o.genOperation()/]
 [/for]
 [/file]
 [/template]
@@ -62,16 +62,17 @@ End Sub
 
 
 [template public genMethod(o : Operation)]
-[if (o.returnResult() <> null)][if (o.returnResult().type.name.toString() = 'Property')][genProperty(o)/][else]Function [/if][else]Sub [/if]
+[if (o.returnResult() <> null)][if (o.returnResult().type.name = 'Property')][genProperty(o)/][else]Function [/if][else]Sub [/if]
 End [if (o.returnResult() <> null)]Function[else]Sub[/if]
+
 [/template]
 
 [template public genProperty(o : Operation)]
-        Get
-        End Get
+    Get
+    End Get
 
-        Set(ByVal value)
-        End Set
+    Set(ByVal value)
+    End Set
 [/template]
 
 [query public path(n : String) : String =
