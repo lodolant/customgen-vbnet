@@ -58,7 +58,7 @@
 
 
 [template public genOperation(o : Operation)]
-	[if (o.name.startsWith('asProperty_'))][genProperty(o)/][elseif (o.visibility = VisibilityKind::private)]Private[else]Public[/if] [genMethod(o)/] [o.name/]([genArguments(o)/])
+	[if (o.name.startsWith('asProperty_'))][genProperty(o)/][else][if] (o.visibility = VisibilityKind::private)]Private[else]Public[/if] [genMethod(o)/] [o.name/]([genArguments(o)/])[/if]
 		# TODO : Complete method
 	End [if (o.returnResult() <> null)]Function[else]Sub[/if]
 
@@ -88,6 +88,5 @@ End Property
 [/template]
 
 
-[query public path(n : String) : String =
-	 n.replaceAll('[^:]*::(.*)', '$1').replaceAll('::', '/')
+[query public path(n : String) : String = n.replaceAll('[^:]*::(.*)', '$1').replaceAll('::', '/')
 /]
