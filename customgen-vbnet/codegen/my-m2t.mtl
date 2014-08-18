@@ -70,9 +70,8 @@
 [/template]
 
 
-
 [template public genArguments(o : Operation)]
-[for (p : Parameter | o.ownedParameter) separator (', ')][if (p <> o.returnResult())]ByVal [p.name/][if (p.type <> null)] As [p.type.name/][/if][/if][/for]
+[for (p : Parameter | o.ownedParameter) separator (', ') ? (false)][if (p <> o.returnResult())]ByVal [p.name/][if (p.type <> null)] As [p.type.name/][/if][/if][/for]
 [/template]
 
 
