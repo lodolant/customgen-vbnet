@@ -58,12 +58,13 @@
 
 [template public genOperation(o : Operation)]
 	[if (o.visibility = VisibilityKind::private)]Private [genMethod(o)/] _[o.name/]()[else]Public  [genMethod(o)/] [o.name/]()[/if]
+	End [if (o.returnResult() <> null)]Function[else]Sub[/if]
+
 [/template]
 
 
 [template public genMethod(o : Operation)]
 [if (o.returnResult() <> null)][if (o.returnResult().type.name = 'Property')][genProperty(o)/][else]Function [/if][else]Sub [/if]
-End [if (o.returnResult() <> null)]Function[else]Sub[/if]
 
 [/template]
 
