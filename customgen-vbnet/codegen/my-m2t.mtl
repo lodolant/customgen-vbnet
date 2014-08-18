@@ -42,6 +42,7 @@
 [/for]
 
 	Sub New()
+	# TODO : Complete constructor
 	End Sub
 
 [for (o : Operation | c.ownedOperation)]
@@ -52,12 +53,13 @@
 
 
 [template public genAttribute(p : Property)]
-	[if (p.visibility = VisibilityKind::private)]Private _[p.name/] As [p.type.name/];[else]Public [p.name/] As [p.type.name/];[/if]
+	[if (p.visibility = VisibilityKind::private)]Private[else]Public[/if] [p.name/] As [p.type.name/];
 [/template]
 
 
 [template public genOperation(o : Operation)]
-	[if (o.visibility = VisibilityKind::private)]Private [genMethod(o)/] _[o.name/]()[else]Public  [genMethod(o)/] [o.name/]()[/if]
+	[if (o.visibility = VisibilityKind::private)]Private[else]Public[/if] [genMethod(o)/] [o.name/]([genArguments(o)/])
+	# TODO : Complete method
 	End [if (o.returnResult() <> null)]Function[else]Sub[/if]
 
 [/template]
@@ -65,6 +67,14 @@
 
 [template public genMethod(o : Operation)]
 [if (o.returnResult() <> null)]Function [else]Sub [/if]
+[/template]
+
+
+
+[template public genArguments(o : Operation)]
+[for (p : Parameter | o.ownedParameter) separator (', ')]
+	[p.type.name/] [p.name/] 
+[/for]
 [/template]
 
 
