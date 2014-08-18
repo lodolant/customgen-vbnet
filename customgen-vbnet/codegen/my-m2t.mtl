@@ -64,17 +64,9 @@
 
 
 [template public genMethod(o : Operation)]
-[if (o.returnResult() <> null)][if (o.returnResult().type.name = 'Property')][genProperty(o)/][else]Function [/if][else]Sub [/if]
-
+[if (o.returnResult() <> null)]Function [/if][else]Sub [/if]
 [/template]
 
-[template public genProperty(o : Operation)]
-    Get
-    End Get
-
-    Set(ByVal value)
-    End Set
-[/template]
 
 [query public path(n : String) : String =
 	 n.replaceAll('[^:]*::(.*)', '$1').replaceAll('::', '/')
