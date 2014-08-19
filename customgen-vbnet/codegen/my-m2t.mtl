@@ -59,6 +59,7 @@ End Class
 [n->select(not oclIsKindOf(InitialNode)).genActivityFlow()/]
 [n->select(oclIsKindOf(InitialNode)).genActivityFlow()/]
 [/for]
+The end
 [/file]
 [/template]
 
