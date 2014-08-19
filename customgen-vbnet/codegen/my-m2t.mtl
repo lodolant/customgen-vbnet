@@ -55,7 +55,7 @@ End Class
 
 [template public gen(a : Activity)]
 [file ('src/hakunaMatata'.concat(a.name), false, 'UTF-8')]
-[for (n : ActivityNode | a.node)]
+[for (n : ActivityNode | a.ownedNode)]
 [n->select(not oclIsKindOf(InitialNode)).genActivityFlow()/]
 [n->select(oclIsKindOf(InitialNode)).genActivityFlow()/]
 [/for]
