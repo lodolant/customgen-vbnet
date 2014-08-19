@@ -60,9 +60,14 @@ End Class
 
 [template public genOperation(o : Operation)]
 	[if (o.name.startsWith('asProperty_'))][genProperty(o)/][else][if] (o.visibility = VisibilityKind::private)]Private[else]Public[/if] [genMethod(o)/] [o.name/]([genArguments(o)/])
-		' TODO : Complete method
+	' TODO : Complete method
 End [if (o.returnResult().type <> null)]Function[else]Sub[/if][/if]
 
+[/template]
+
+
+[template public genMethod(o : Operation)]
+[if (o.returnResult().type <> null)]Function[else]Sub[/if]
 [/template]
 
 
@@ -79,13 +84,13 @@ End Property
 [/template]
 
 
-[template public genMethod(o : Operation)]
-[if (o.returnResult().type <> null)]Function [else]Sub [/if]
+[template public genArguments(o : Operation)]
+[for (p : Parameter | o.ownedParameter) separator (', ') ? (p.direction <> ParameterDirectionKind::return)][if (p <> o.returnResult())]ByVal [p.name/][if (p.type <> null)] As [p.type.name/][/if][/if][/for]
 [/template]
 
 
-[template public genArguments(o : Operation)]
-[for (p : Parameter | o.ownedParameter) separator (', ') ? (p.direction <> ParameterDirectionKind::return)][if (p <> o.returnResult())]ByVal [p.name/][if (p.type <> null)] As [p.type.name/][/if][/if][/for]
+[template public gen(c : Activity)]
+HAKUNA MATATA!
 [/template]
 
 
