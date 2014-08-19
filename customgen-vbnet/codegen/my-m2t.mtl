@@ -99,7 +99,22 @@ End Property
 
 
 [template public genActivityFlow(n : ActivityNode) ? (n.oclIsTypeOf(InitialNode))]
-[for (n.outgoing)][n.outgoing.target.genActivityFlow()/]one outgoing segment[/for]
+[for (e : ActivityEdge | n.outgoing)][e.target.genActivityFlow()/][/for]
+[/template]
+
+
+[template public genActivityFlow(n : ActivityNode) ? (n.oclIsTypeOf(OpaqueAction))]
+[for (n.outgoing)][n.outgoing.target.genActivityFlow()/][/for]
+[/template]
+
+
+
+[template public genActivityFlow(n : ActivityNode) ? (n.oclIsTypeOf(DecisionNode))]
+[for (o : ActivityEdge | n.outgoing)][n.outgoing.target.genActivityFlow()/]
+	If ([o.guard/])
+		[o.target.genActivityFlow()/]
+	End If
+[/for]
 [/template]
 
 
