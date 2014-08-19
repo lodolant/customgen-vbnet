@@ -54,11 +54,11 @@ End Class
 
 
 [template public gen(a : Activity)]
-[file ('src/hakunaMatata'.concat(a.name), false, 'UTF-8')]
+[comment][file ('src/hakunaMatata'.concat(a.name), false, 'UTF-8')]
 [for (n : ActivityNode | a.ownedNode)]
 [n->select(oclIsKindOf(InitialNode)).genActivityFlow()/]
 [/for]
-[/file]
+[/file][/comment]
 [/template]
 
 
@@ -69,7 +69,11 @@ End Class
 
 [template public genOperation(o : Operation)]
 	[if (o.name.startsWith('asProperty_'))][genProperty(o)/][else][if] (o.visibility = VisibilityKind::private)]Private[else]Public[/if] [genMethod(o)/] [o.name/]([genArguments(o)/])
+	
+[protected (o.name)]
 	' TODO : Complete method
+	[o.genActivityFlow()/]
+[/protected]
 End [if (o.returnResult().type <> null)]Function[else]Sub[/if][/if]
 
 [/template]
@@ -98,6 +102,19 @@ End Property
 [/template]
 
 
+[template public genActivityFlow(o : Operation)]
+[for (p : PackageableElement | o.getModel().packagedElement)]
+[let a : Activity = p]
+[if(o.name = a.name)]
+[for (n : ActivityNode | a.ownedNode)]
+	[n.genActivityFlow()/]
+[/for]
+[/if]
+[/let]
+[/for]
+[/template]
+
+
 [template public genActivityFlow(n : ActivityNode) ? (n.oclIsTypeOf(InitialNode))]
 [for (e : ActivityEdge | n.outgoing)][e.target.genActivityFlow()/][/for]
 [/template]
@@ -111,7 +128,7 @@ End Property
 
 [template public genActivityFlow(n : ActivityNode) ? (n.oclIsTypeOf(DecisionNode))]
 [for (o : ActivityEdge | n.outgoing)][n.outgoing.target.genActivityFlow()/]
-	If ([o.guard/])
+	If ([o.guard.stringValue()/])
 		[o.target.genActivityFlow()/]
 	End If
 [/for]
