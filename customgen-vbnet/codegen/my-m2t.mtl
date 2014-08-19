@@ -53,6 +53,13 @@ End Class
 [/template]
 
 
+[template public gen(a : Activity)]
+[file ('src/hakunaMatata'.concat(a.name), false, 'UTF-8')]
+HAKUNA MATATA!
+[/file]
+[/template]
+
+
 [template public genAttribute(p : Property)]
 	[if (p.visibility = VisibilityKind::private)]Private[else]Dim[/if] [p.name/] As [p.type.name/]
 [/template]
@@ -86,11 +93,6 @@ End Property
 
 [template public genArguments(o : Operation)]
 [for (p : Parameter | o.ownedParameter) separator (', ') ? (p.direction <> ParameterDirectionKind::return)][if (p <> o.returnResult())]ByVal [p.name/][if (p.type <> null)] As [p.type.name/][/if][/if][/for]
-[/template]
-
-
-[template public gen(c : Activity)]
-HAKUNA MATATA!
 [/template]
 
 
