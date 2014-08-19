@@ -56,10 +56,8 @@ End Class
 [template public gen(a : Activity)]
 [file ('src/hakunaMatata'.concat(a.name), false, 'UTF-8')]
 [for (n : ActivityNode | a.ownedNode)]
-[n->select(not oclIsKindOf(InitialNode)).genActivityFlow()/]
 [n->select(oclIsKindOf(InitialNode)).genActivityFlow()/]
 [/for]
-The end
 [/file]
 [/template]
 
@@ -100,12 +98,8 @@ End Property
 [/template]
 
 
-
-[template public genActivityFlow(n : ActivityNode)]
-nord
-[/template]
-[template public genActivityFlow(n : InitialNode)]
-sud
+[template public genActivityFlow(n : ActivityNode) ? (n.oclIsTypeOf(InitialNode))]
+[for (n.outgoing)][n.outgoing.target.genActivityFlow()/][/for]
 [/template]
 
 
