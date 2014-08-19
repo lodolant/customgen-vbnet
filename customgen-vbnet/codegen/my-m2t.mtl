@@ -58,11 +58,10 @@ End Class
 
 [template public genAttribute(p : Property)]
 [if (p.visibility = VisibilityKind::private)]
-	Private
+	Private [p.name/] As [p.type.name/]
 [else]
-	Dim
+	Dim [p.name/] As [p.type.name/]
 [/if]
- [p.name/] As [p.type.name/]
 [/template]
 
 
@@ -80,41 +79,27 @@ Public
 	' TODO : Complete method
 	[o.genActivityFlow()/]
 	'[/protected]
-End
-[if (o.returnResult().type <> null)]
- Function
-[else]
-Sub
-[/if]
+End [if (o.returnResult().type <> null)]Function[else]Sub[/if]
 [/if]
 
 [/template]
 
 
 [template public genMethod(o : Operation)]
-[if (o.returnResult().type <> null)]
-Function
-[else]
-Sub
-[/if]
+[if (o.returnResult().type <> null)]Function[else]Sub[/if]
 [/template]
 
 
 [template public genProperty(o : Operation)]
-[if (o.visibility = VisibilityKind::private)]
-Private
-[else]
-Public
-[/if]
- Property [o.name.replace('asProperty_', (''))/]() 
-[if (o.returnResult().type <> null)]
+[if (o.visibility = VisibilityKind::private)]Private[else]Public[/if] Property [o.name.replace('asProperty_', (''))/]()
+[if (o.returnResult().type.name <> 'void')]
  As [o.returnResult().type.name/]
 [/if]
 	Get
 		Return [o.name.replace('asProperty_', (''))/]
 	End Get
 	Set(ByVal value
-[if (o.returnResult().type <> null)]
+[if (o.returnResult().type.name <> 'void')]
  As [o.returnResult().type.name/]
 [/if])
 		[o.name.replace('asProperty_', (''))/] = value
