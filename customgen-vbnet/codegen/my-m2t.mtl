@@ -69,11 +69,10 @@ End Class
 
 [template public genOperation(o : Operation)]
 	[if (o.name.startsWith('asProperty_'))][genProperty(o)/][else][if] (o.visibility = VisibilityKind::private)]Private[else]Public[/if] [genMethod(o)/] [o.name/]([genArguments(o)/])
-	
-[protected (o.name)]
+	'[protected (o.name)]
 	' TODO : Complete method
 	[o.genActivityFlow()/]
-[/protected]
+	'[/protected]
 End [if (o.returnResult().type <> null)]Function[else]Sub[/if][/if]
 
 [/template]
