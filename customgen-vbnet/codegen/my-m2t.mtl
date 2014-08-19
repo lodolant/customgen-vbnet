@@ -99,6 +99,9 @@ End [if (o.returnResult().type <> null)]Function[else]Sub[/if]
 		Return [o.name.replace('asProperty_', (''))/]
 	End Get
 	Set(ByVal value
+returnResult : [o.returnResult()/]
+type : [o.returnResult().type/]
+name : [o.returnResult().type.name/]
 [if (o.returnResult().type.name <> 'void')]
  As [o.returnResult().type.name/]
 [/if])
