@@ -34,7 +34,7 @@
 
 [template public gen(c : Class)]
 [file ('src/'.concat(c.qualifiedName.path()).concat('.vb'), false, 'UTF-8')]
-/* Generated from GenMyModel */
+' Generated from GenMyModel
 [if (c.visibility = VisibilityKind::public)]Public Class [c.name/][else]Private Class [c.name/][/if]
 
 [for (p : Property | c.ownedAttribute)]
@@ -42,25 +42,28 @@
 [/for]
 
 	Sub New()
-		# TODO : Complete constructor
+		' TODO : Complete constructor
 	End Sub
 
 [for (o : Operation | c.ownedOperation)]
-[o.genOperation()/]
+	[o.genOperation()/]
 [/for]
+
+End Class
 [/file]
 [/template]
 
 
 [template public genAttribute(p : Property)]
-	[if (p.visibility = VisibilityKind::private)]Private[else]Dim[/if] [p.name/] As [p.type.name/];
+	[if (p.visibility = VisibilityKind::private)]Private[else]Dim[/if] [p.name/] As [p.type.name/]
 [/template]
 
 
 [template public genOperation(o : Operation)]
 	[if (o.name.startsWith('asProperty_'))][genProperty(o)/][else][if] (o.visibility = VisibilityKind::private)]Private[else]Public[/if] [genMethod(o)/] [o.name/]([genArguments(o)/])
-		# TODO : Complete method
+		' TODO : Complete method
 	End [if (o.returnResult() <> null)]Function[else]Sub[/if][/if]
+
 [/template]
 
 
