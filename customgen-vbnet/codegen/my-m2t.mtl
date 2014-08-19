@@ -69,11 +69,7 @@ End Class
 [if (o.name.startsWith('asProperty_'))]
 [genProperty(o)/]
 [else]
-[if] 
- (o.visibility = VisibilityKind::private)]Private
-[else]
-Public
-[/if]
+[if (o.visibility = VisibilityKind::private)]Private[else]Public[/if]
  [genMethod(o)/] [o.name/]([genArguments(o)/])
 	'[protected (o.name)]
 	' TODO : Complete method
@@ -86,6 +82,9 @@ End [if (o.returnResult().type <> null)]Function[else]Sub[/if]
 
 
 [template public genMethod(o : Operation)]
+returnResult : [o.returnResult()/]
+type : [o.returnResult().type/]
+name : [o.returnResult().type.name/]
 [if (o.returnResult().type <> null)]Function[else]Sub[/if]
 [/template]
 
@@ -99,9 +98,6 @@ End [if (o.returnResult().type <> null)]Function[else]Sub[/if]
 		Return [o.name.replace('asProperty_', (''))/]
 	End Get
 	Set(ByVal value
-returnResult : [o.returnResult()/]
-type : [o.returnResult().type/]
-name : [o.returnResult().type.name/]
 [if (o.returnResult().type.name <> 'void')]
  As [o.returnResult().type.name/]
 [/if])
