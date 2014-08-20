@@ -57,11 +57,8 @@ End Class
 [/template]
 
 [template public genAttribute(p : Property)]
-[if (p.visibility = VisibilityKind::private)]
-	Private [p.name/] As [p.type.name/]
-[else]
-	Dim [p.name/] As [p.type.name/]
-[/if]
+[if (p.visibility = VisibilityKind::private)]Private [p.name/] As [p.type.name/]
+[else]Dim [p.name/] As [p.type.name/][/if]
 [/template]
 
 
@@ -101,20 +98,16 @@ End Property
 
 
 [template public genArguments(o : Operation)]
-[for (p : Parameter | o.ownedParameter) separator (', ') ? (p.direction <> ParameterDirectionKind::return)]
-[if (p <> o.returnResult())]ByVal [p.name/][if (p.type <> null)] As [p.type.name/][/if][/if]
-[/for]
+[for (p : Parameter | o.ownedParameter) separator (', ') ? (p.direction <> ParameterDirectionKind::return)][if (p <> o.returnResult())]ByVal [p.name/][if (p.type <> null)] As [p.type.name/][/if][/if][/for]
 [/template]
 
 
 [template public genActivityFlow(o : Operation)]
 [for (p : PackageableElement | o.getModel().packagedElement)]
 [let a : Activity = p]
-[if(o.name = a.name)]
-[for (n : ActivityNode | a.ownedNode)]
-	[n.genActivityFlow()/]
-[/for]
-[/if]
+[if(o.name = a.name)][for (n : ActivityNode | a.ownedNode)]
+[n.genActivityFlow()/]
+[/for][/if]
 [/let]
 [/for]
 [/template]
