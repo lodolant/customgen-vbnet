@@ -69,13 +69,12 @@ End Class
 [if (o.name.startsWith('asProperty_'))]
 [genProperty(o)/]
 [else]
-[if (o.visibility = VisibilityKind::private)]Private[else]Public[/if]
- [genMethod(o)/] [o.name/]([genArguments(o)/])
+[if (o.visibility = VisibilityKind::private)]Private[else]Public[/if] [genMethod(o)/] [o.name/]([genArguments(o)/])
 	'[protected (o.name)]
 	' TODO : Complete method
 	[o.genActivityFlow()/]
 	'[/protected]
-End [if (o.returnResult().type <> null)]Function[else]Sub[/if]
+End [if (o.returnResult()->exists(o.returnResult().type <> null))]Function[else]Sub[/if]
 [/if]
 
 [/template]
@@ -88,16 +87,12 @@ End [if (o.returnResult().type <> null)]Function[else]Sub[/if]
 
 [template public genProperty(o : Operation)]
 [if (o.visibility = VisibilityKind::private)]Private[else]Public[/if] Property [o.name.replace('asProperty_', (''))/]()
-[if (o.returnResult()->exists(o.returnResult().type <> null))]
- As [o.returnResult().type.name/]
-[/if]
+[if (o.returnResult()->exists(o.returnResult().type <> null))] As [o.returnResult().type.name/][/if]
 	Get
 		Return [o.name.replace('asProperty_', (''))/]
 	End Get
 	Set(ByVal value
-[if (o.returnResult()->exists(o.returnResult().type <> null))]
- As [o.returnResult().type.name/]
-[/if])
+[if (o.returnResult()->exists(o.returnResult().type <> null))] As [o.returnResult().type.name/][/if])
 		[o.name.replace('asProperty_', (''))/] = value
 	End Set
 End Property
@@ -107,11 +102,7 @@ End Property
 
 [template public genArguments(o : Operation)]
 [for (p : Parameter | o.ownedParameter) separator (', ') ? (p.direction <> ParameterDirectionKind::return)]
-[if (p <> o.returnResult())]
-ByVal [p.name/]
-[if (p.type <> null)] As [p.type.name/]
-[/if]
-[/if]
+[if (p <> o.returnResult())]ByVal [p.name/][if (p.type <> null)] As [p.type.name/][/if][/if]
 [/for]
 [/template]
 
