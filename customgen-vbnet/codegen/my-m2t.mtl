@@ -71,14 +71,14 @@ End Class
 	' TODO : Complete method
 	[o.genActivityFlow()/]
 	'[/protected]
-End [if (o.returnResult()->exists(o.returnResult().type <> null))]Function[else]Sub[/if]
+End [if (o.returnResult().type <> null)]Function[else]Sub[/if]
 [/if]
 
 [/template]
 
 
 [template public genMethod(o : Operation)]
-[if (o.returnResult()->exists(o.returnResult().type <> null))]Function[else]Sub[/if]
+[if (o.returnResult().type <> null)]Function[else]Sub[/if] 
 [/template]
 
 
