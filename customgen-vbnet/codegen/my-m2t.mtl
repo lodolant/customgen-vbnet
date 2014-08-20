@@ -49,16 +49,13 @@ Private Class [c.name/]
 		' TODO : Complete constructor
 	End Sub
 
-[for (o : Operation | c.ownedOperation)]
-	[o.genOperation()/]
-[/for]
+[for (o : Operation | c.ownedOperation)]	[o.genOperation()/][/for]
 End Class
 [/file]
 [/template]
 
 [template public genAttribute(p : Property)]
-[if (p.visibility = VisibilityKind::private)]Private [p.name/] As [p.type.name/]
-[else]Dim [p.name/] As [p.type.name/][/if]
+[if (p.visibility = VisibilityKind::private)]Private [p.name/] As [p.type.name/][else]Dim [p.name/] As [p.type.name/][/if]
 [/template]
 
 
@@ -71,18 +68,14 @@ End Class
 	' TODO : Complete method
 	[o.genActivityFlow()/]
 	'[/protected]
-End [if (o.returnResult().type <> null)]Function[else]Sub[/if]
+End [if (o.returnResult()->exists(type <> null))]Function[else]Sub[/if]
 [/if]
 
 [/template]
 
 
 [template public genMethod(o : Operation)]
-return : [o.returnResult().type/]
-type :   [o.returnResult().type/]
-[let p : Parameter = o.returnResult().siblings().current(0)]
-[if (p.type <> null)]Function[else]Sub[/if] 
-[/let]
+[if (o.returnResult()->exists(type <> null))]Function[else]Sub[/if]
 [/template]
 
 
@@ -92,8 +85,7 @@ type :   [o.returnResult().type/]
 	Get
 		Return [o.name.replace('asProperty_', (''))/]
 	End Get
-	Set(ByVal value
-[if (o.returnResult()->exists(o.returnResult().type <> null))] As [o.returnResult().type.name/][/if])
+	Set(ByVal value[if (o.returnResult()->exists(o.returnResult().type <> null))] As [o.returnResult().type.name/][/if])
 		[o.name.replace('asProperty_', (''))/] = value
 	End Set
 End Property
@@ -107,27 +99,20 @@ End Property
 
 
 [template public genActivityFlow(o : Operation)]
-[for (p : PackageableElement | o.getModel().packagedElement)]
-[let a : Activity = p]
-[if(o.name = a.name)][for (n : ActivityNode | a.ownedNode)]
+[for (p : PackageableElement | o.getModel().packagedElement)][let a : Activity = p][if(o.name = a.name)]
+[for (n : ActivityNode | a.ownedNode)]
 [n.genActivityFlow()/]
-[/for][/if]
-[/let]
-[/for]
+[/for][/if][/let][/for]
 [/template]
 
 
 [template public genActivityFlow(n : ActivityNode) ? (n.oclIsTypeOf(InitialNode))]
-[for (e : ActivityEdge | n.outgoing)]
-[e.target.genActivityFlow()/]
-[/for]
+[for (e : ActivityEdge | n.outgoing)][e.target.genActivityFlow()/][/for]
 [/template]
 
 
 [template public genActivityFlow(n : ActivityNode) ? (n.oclIsTypeOf(OpaqueAction))]
-[for (n.outgoing)]
-[n.outgoing.target.genActivityFlow()/]
-[/for]
+[for (n.outgoing)][n.outgoing.target.genActivityFlow()/][/for]
 [/template]
 
 
@@ -136,8 +121,7 @@ End Property
 [for (o : ActivityEdge | n.outgoing)][n.outgoing.target.genActivityFlow()/]
 	If ([o.guard.stringValue()/])
 		[o.target.genActivityFlow()/]
-	End If
-[/for]
+	End If[/for]
 [/template]
 
 
