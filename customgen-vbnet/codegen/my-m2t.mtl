@@ -78,6 +78,8 @@ End [if (o.returnResult().type <> null)]Function[else]Sub[/if]
 
 
 [template public genMethod(o : Operation)]
+[o.returnResult()/]
+[o.returnResult().type/]
 [if (o.returnResult().type <> null)]Function[else]Sub[/if] 
 [/template]
 
