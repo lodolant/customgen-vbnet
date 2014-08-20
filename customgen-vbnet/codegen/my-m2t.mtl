@@ -78,9 +78,11 @@ End [if (o.returnResult().type <> null)]Function[else]Sub[/if]
 
 
 [template public genMethod(o : Operation)]
-[o.returnResult()/]
-[o.returnResult().type/]
-[if (o.returnResult().type <> null)]Function[else]Sub[/if] 
+return : [o.returnResult().type/]
+type :   [o.returnResult().type/]
+[let p : Parameter = o.returnResult().siblings().current(0)]
+[if (p.type <> null)]Function[else]Sub[/if] 
+[/let]
 [/template]
 
 
