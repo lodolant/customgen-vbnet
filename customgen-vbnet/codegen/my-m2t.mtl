@@ -49,7 +49,9 @@ Private Class [c.name/]
 		' TODO : Complete constructor
 	End Sub
 
-[for (o : Operation | c.ownedOperation)]	[o.genOperation()/][/for]
+[for (o : Operation | c.ownedOperation)]
+	[o.genOperation()/]
+[/for]
 End Class
 [/file]
 [/template]
@@ -99,10 +101,9 @@ End Property
 
 
 [template public genActivityFlow(o : Operation)]
-[for (p : PackageableElement | o.getModel().packagedElement)][let a : Activity = p][if(o.name = a.name)]
-[for (n : ActivityNode | a.ownedNode)]
-[n.genActivityFlow()/]
-[/for][/if][/let][/for]
+[for (p : PackageableElement | o.getModel().packagedElement)][let a : Activity = p][if(o.name = a.name)][for (n : ActivityNode | a.ownedNode)][let i : InitialNode = n]
+[i.genActivityFlow()/]
+[/let][/for][/if][/let][/for]
 [/template]
 
 
@@ -116,10 +117,9 @@ End Property
 [/template]
 
 
-
 [template public genActivityFlow(n : ActivityNode) ? (n.oclIsTypeOf(DecisionNode))]
 [for (o : ActivityEdge | n.outgoing)][n.outgoing.target.genActivityFlow()/]
-	If ([o.guard.stringValue()/])
+	If ([o.guard.stringValue()/]) ' [n.incoming.source.name/]
 		[o.target.genActivityFlow()/]
 	End If[/for]
 [/template]
